@@ -1,3 +1,7 @@
+/**
+ * GTA:SA Memory Addresses index
+ * 'https://gtamods.com/wiki/Memory_Addresses_(SA)'
+ */
 #include <Windows.h>
 #include <iostream>
 
