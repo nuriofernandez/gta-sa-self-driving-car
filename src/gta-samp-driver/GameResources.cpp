@@ -53,42 +53,77 @@ private: float ReadFloat(DWORD pointerAddress) {
 	return response;
 }
 
+private: DWORD GetPed() {
+	DWORD cPED;
+	ReadProcessMemory(GTA, (void*)0xB6F5F0, &cPED, sizeof(cPED), NULL);
+	return cPED;
+}
+
+private: DWORD GetPlayerPoistion() {
+	DWORD matrixPtr = 0;
+	ReadProcessMemory(GTA, (void*)(GetPed() + 0x14), &matrixPtr, sizeof(matrixPtr), NULL);
+	return matrixPtr;
+}
+
+private: DWORD GetCarPoistion() {
+	DWORD carAddress;
+	ReadProcessMemory(GTA, (void*)(GetPed() + 0x58C), &carAddress, sizeof(carAddress), 0);
+	return carAddress;
+}
+
+private: DWORD getCarRotation() {
+	DWORD RotationMatrix;
+	ReadProcessMemory(GTA, (void*)(GetCarPoistion() + 20), &RotationMatrix, sizeof(RotationMatrix), 0);
+	return RotationMatrix;
+}
+
 public: int GetMoney() {
 	return ReadInt(0xB7CE50);
 }
 
-public: int GetPed() {
-	return ReadInt(0xB6F5F0);
-}
-
-public: float GetX() {
-	DWORD cPED;
-	ReadProcessMemory(GTA, (void*)0xB6F5F0, &cPED, sizeof(cPED), NULL);
-	DWORD matrixPtr = 0;
-	ReadProcessMemory(GTA, (void*)(cPED + 0x14), &matrixPtr, sizeof(matrixPtr), NULL);
-	float positionX = 2696.3816;
-	ReadProcessMemory(GTA, (void*)(matrixPtr + 0x30), &positionX, sizeof(positionX), NULL);
+public: float GetPlayerX() {
+	float positionX = 0;
+	ReadProcessMemory(GTA, (void*)(GetPlayerPoistion() + 0x30), &positionX, sizeof(positionX), NULL);
 	return positionX;
 }
 
-public: float GetY() {
-	DWORD cPED;
-	ReadProcessMemory(GTA, (void*)0xB6F5F0, &cPED, sizeof(cPED), NULL);
-	DWORD matrixPtr = 0;
-	ReadProcessMemory(GTA, (void*)(cPED + 0x14), &matrixPtr, sizeof(matrixPtr), NULL);
-	float positionY = 2696.3816;
-	ReadProcessMemory(GTA, (void*)(matrixPtr + 0x34), &positionY, sizeof(positionY), NULL);
+public: float GetPlayerY() {
+	float positionY = 0;
+	ReadProcessMemory(GTA, (void*)(GetPlayerPoistion() + 0x34), &positionY, sizeof(positionY), NULL);
 	return positionY;
 }
 
-public: float GetZ() {
-	DWORD cPED;
-	ReadProcessMemory(GTA, (void*)0xB6F5F0, &cPED, sizeof(cPED), NULL);
-	DWORD matrixPtr = 0;
-	ReadProcessMemory(GTA, (void*)(cPED + 0x14), &matrixPtr, sizeof(matrixPtr), NULL);
-	float positionZ = 2696.3816;
-	ReadProcessMemory(GTA, (void*)(matrixPtr + 0x38), &positionZ, sizeof(positionZ), NULL);
+public: float GetPlayerZ() {
+	float positionZ = 0;
+	ReadProcessMemory(GTA, (void*)(GetPlayerPoistion() + 0x38), &positionZ, sizeof(positionZ), NULL);
 	return positionZ;
+}
+
+public: bool IsInCar() {
+	uint8_t pedStatus;
+	ReadProcessMemory(GTA, (void*)(GetPed() + 0x46C), &pedStatus, sizeof(pedStatus), 0);
+	return pedStatus == 1;
+}
+
+public: float GetCarRotationAngle() {
+	float anglex_grad, anglez_grad, anglex_look, angley_look;
+
+	DWORD MemoryAddress = getCarRotation() + 0;
+	ReadProcessMemory(GTA, (void*)MemoryAddress, &anglex_grad, sizeof(anglex_grad), 0);
+
+	MemoryAddress = getCarRotation() + 16;
+	ReadProcessMemory(GTA, (void*)MemoryAddress, &anglex_look, sizeof(anglex_look), 0);
+
+	MemoryAddress = getCarRotation() + 20;
+	ReadProcessMemory(GTA, (void*)MemoryAddress, &angley_look, sizeof(angley_look), 0);
+
+	MemoryAddress = getCarRotation() + 8;
+	ReadProcessMemory(GTA, (void*)MemoryAddress, &anglez_grad, sizeof(anglez_grad), 0);
+
+	if ((angley_look >= 0 && anglex_look >= 0) || (angley_look < 0 && anglex_look > 0)) {
+		return acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
+	}
+	return 360 - acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
 }
 
 };

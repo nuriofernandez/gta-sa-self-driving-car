@@ -12,25 +12,21 @@ int main()
 	int destY = 2150;
 
 	while (true) {
-		
-		float posX = GTA->GetX();
-		float posY = GTA->GetY();
-		float posZ = GTA->GetZ();
-		printf("POS ( %f , %f , %f )\n", posX, posY, posZ);
 
-		float diffX = posX - destX;
-		float diffY = posY - destY;
-		printf("DIFF ( %f , %f )\n", diffX, diffY);
-
-		if (diffX <= 1 || diffY <= 1) {
-			BOT->StopMovingForward();
-		}
-		else
-		{
-			BOT->MoveForward();
+		Sleep(800);
+		if (!GTA->IsInCar()) {
+			printf("Player is not in a car.\n");
+			continue;
 		}
 
-		Sleep(200);
+		float posX = GTA->GetPlayerX();
+		float posY = GTA->GetPlayerY();
+		float posZ = GTA->GetPlayerZ();
+		printf("POS ( %f , %f )\n", posX, posY);
+
+		float rotation = GTA->GetCarRotationAngle();
+		printf("ROT ( %f )\n", rotation);
+
 	}
 
 }
