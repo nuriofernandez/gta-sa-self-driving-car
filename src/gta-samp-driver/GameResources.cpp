@@ -4,126 +4,78 @@
  */
 #include <Windows.h>
 #include <iostream>
+#include <cmath>
+#include "MemoryReader.cpp"
 
-using std::cout;
-using std::endl;
+using namespace std;
 
 class GameResources {
 
-private: HANDLE GTA;
+private:
+    MemoryReader memoryReader = MemoryReader("GTA:SA:MP");
 
-public: GameResources() {
-	FindSAMP();
-}
+public:
+    GameResources() {
 
-public: void FindSAMP() {
-	HWND hwnd = FindWindowW(NULL, L"GTA:SA:MP"); // Handle the windows of the game.
-	if (hwnd == NULL) {
-		printf("Error: %s\n", "'SAMP' process not found!"); // Message if the window cannot be found.
-		Sleep(5000);
-		exit(-1);
-	}
+    }
 
-	DWORD procID;
-	GetWindowThreadProcessId(hwnd, &procID);
-	GTA = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procID); // Give all access to the process.
+private:
+    DWORD GetPed() {
+        return memoryReader.ReadDWORD(0xB6F5F0);
+    }
 
-	if (procID == NULL) {
-		printf("Error: %s\n", " Can not access to 'SAMP' PID!"); // Message if the window cannot be found.
-		Sleep(3000);
-		exit(-1);
-	}
-}
+private:
+    DWORD GetPlayerPoistion() {
+        return memoryReader.ReadDWORD((GetPed() + 0x14));
+    }
 
-private: int ReadInt(DWORD pointerAddress) {
-	int response = 0;
-	if (!ReadProcessMemory(GTA, (LPVOID)pointerAddress, &response, sizeof(response), NULL)) {
-		cout << "ReadProcessMemory FAILED" << endl;
-		return -1;
-	}
-	return response;
-}
+private:
+    DWORD GetCarPoistion() {
+        return memoryReader.ReadDWORD((GetPed() + 0x58C));
+    }
 
-private: float ReadFloat(DWORD pointerAddress) {
-	float response = 0;
-	if (!ReadProcessMemory(GTA, (LPVOID)pointerAddress, &response, sizeof(response), NULL)) {
-		cout << "ReadProcessMemory FAILED" << endl;
-		return -1;
-	}
-	return response;
-}
+private:
+    DWORD getCarRotation() {
+        return memoryReader.ReadDWORD(GetCarPoistion() + 20);
+    }
 
-private: DWORD GetPed() {
-	DWORD cPED;
-	ReadProcessMemory(GTA, (void*)0xB6F5F0, &cPED, sizeof(cPED), NULL);
-	return cPED;
-}
+public:
+    int GetMoney() {
+        return memoryReader.ReadInt(0xB7CE50);
+    }
 
-private: DWORD GetPlayerPoistion() {
-	DWORD matrixPtr = 0;
-	ReadProcessMemory(GTA, (void*)(GetPed() + 0x14), &matrixPtr, sizeof(matrixPtr), NULL);
-	return matrixPtr;
-}
+public:
+    float GetPlayerX() {
+        return memoryReader.ReadFloat(GetPlayerPoistion() + 0x30);
+    }
 
-private: DWORD GetCarPoistion() {
-	DWORD carAddress;
-	ReadProcessMemory(GTA, (void*)(GetPed() + 0x58C), &carAddress, sizeof(carAddress), 0);
-	return carAddress;
-}
+public:
+    float GetPlayerY() {
+        return memoryReader.ReadFloat(GetPlayerPoistion() + 0x34);
+    }
 
-private: DWORD getCarRotation() {
-	DWORD RotationMatrix;
-	ReadProcessMemory(GTA, (void*)(GetCarPoistion() + 20), &RotationMatrix, sizeof(RotationMatrix), 0);
-	return RotationMatrix;
-}
+public:
+    float GetPlayerZ() {
+        return memoryReader.ReadFloat(GetPlayerPoistion() + 0x38);
+    }
 
-public: int GetMoney() {
-	return ReadInt(0xB7CE50);
-}
+public:
+    bool IsInCar() {
+        uint8_t pedStatus = memoryReader.ReadUint8((DWORD) (GetPed() + 0x46C));
+        return pedStatus == 1; // 1 = IN CAR
+    }
 
-public: float GetPlayerX() {
-	float positionX = 0;
-	ReadProcessMemory(GTA, (void*)(GetPlayerPoistion() + 0x30), &positionX, sizeof(positionX), NULL);
-	return positionX;
-}
+public:
+    float GetCarRotationAngle() {
+        float anglex_grad = memoryReader.ReadFloat(getCarRotation() + 0);
+        float anglex_look = memoryReader.ReadFloat(getCarRotation() + 16);
+        float angley_look = memoryReader.ReadFloat(getCarRotation() + 20);
+        float anglez_grad = memoryReader.ReadFloat(getCarRotation() + 8);
 
-public: float GetPlayerY() {
-	float positionY = 0;
-	ReadProcessMemory(GTA, (void*)(GetPlayerPoistion() + 0x34), &positionY, sizeof(positionY), NULL);
-	return positionY;
-}
-
-public: float GetPlayerZ() {
-	float positionZ = 0;
-	ReadProcessMemory(GTA, (void*)(GetPlayerPoistion() + 0x38), &positionZ, sizeof(positionZ), NULL);
-	return positionZ;
-}
-
-public: bool IsInCar() {
-	uint8_t pedStatus;
-	ReadProcessMemory(GTA, (void*)(GetPed() + 0x46C), &pedStatus, sizeof(pedStatus), 0);
-	return pedStatus == 1;
-}
-
-public: float GetCarRotationAngle() {
-	float anglex_grad, anglez_grad, anglex_look, angley_look;
-
-	DWORD MemoryAddress = getCarRotation() + 0;
-	ReadProcessMemory(GTA, (void*)MemoryAddress, &anglex_grad, sizeof(anglex_grad), 0);
-
-	MemoryAddress = getCarRotation() + 16;
-	ReadProcessMemory(GTA, (void*)MemoryAddress, &anglex_look, sizeof(anglex_look), 0);
-
-	MemoryAddress = getCarRotation() + 20;
-	ReadProcessMemory(GTA, (void*)MemoryAddress, &angley_look, sizeof(angley_look), 0);
-
-	MemoryAddress = getCarRotation() + 8;
-	ReadProcessMemory(GTA, (void*)MemoryAddress, &anglez_grad, sizeof(anglez_grad), 0);
-
-	if ((angley_look >= 0 && anglex_look >= 0) || (angley_look < 0 && anglex_look > 0)) {
-		return acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
-	}
-	return 360 - acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
-}
+        if ((angley_look >= 0 && anglex_look >= 0) || (angley_look < 0 && anglex_look > 0)) {
+            return acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
+        }
+        return 360 - acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
+    }
 
 };
