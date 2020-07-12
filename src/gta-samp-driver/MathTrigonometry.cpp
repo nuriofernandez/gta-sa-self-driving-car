@@ -91,8 +91,8 @@ public:
         float attached = this->GetAttachedLineValue(x, y);
         float hypotenuse = this->GetHypotenuseLineValue(x, y);
 
-        double angleAtt = acos(attached / hypotenuse) * 180.0 / M_PI;
-        return angleAtt + this->GetOffSetGrades(x, y);
+        double angle = acos(attached / hypotenuse) * 180.0 / M_PI;
+        return angle + this->GetOffSetGrades(x, y);
     }
 
 public:

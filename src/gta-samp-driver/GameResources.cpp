@@ -67,15 +67,15 @@ public:
 
 public:
     float GetCarRotationAngle() {
-        float anglex_grad = memoryReader.ReadFloat(getCarRotation() + 0);
-        float anglex_look = memoryReader.ReadFloat(getCarRotation() + 16);
-        float angley_look = memoryReader.ReadFloat(getCarRotation() + 20);
-        float anglez_grad = memoryReader.ReadFloat(getCarRotation() + 8);
+        float anglexGrad = memoryReader.ReadFloat(getCarRotation() + 0);
+        float anglexLook = memoryReader.ReadFloat(getCarRotation() + 16);
+        float angleyLook = memoryReader.ReadFloat(getCarRotation() + 20);
+        float anglezGrad = memoryReader.ReadFloat(getCarRotation() + 8);
 
-        if ((angley_look >= 0 && anglex_look >= 0) || (angley_look < 0 && anglex_look > 0)) {
-            return acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
+        if ((angleyLook >= 0 && anglexLook >= 0) || (angleyLook < 0 && anglexLook > 0)) {
+            return acos(anglexGrad / cos(asin(anglezGrad))) * 180.0 / 3.1415;
         }
-        return 360 - acos(anglex_grad / cos(asin(anglez_grad))) * 180.0 / 3.1415;
+        return 360 - acos(anglexGrad / cos(asin(anglezGrad))) * 180.0 / 3.1415;
     }
 
 };
