@@ -80,8 +80,23 @@ public:
     }
 
 public:
-    void StopBrake() {
+    void StopBraking() {
         releaseKey(0x20);
+    }
+
+public:
+    void Run() {
+        Brake();
+    }
+
+public:
+    void StopRunning() {
+        StopBraking();
+    }
+
+public:
+    void JoinOrLeaveCar() {
+        longPressKey(0x46);
     }
 
 };
