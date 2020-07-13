@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES
+
+#include <math.h>
 #include "GameResources.cpp"
 
 enum PositionQuadrant {
@@ -47,7 +50,7 @@ public:
     }
 
 public:
-    float GetAttachedLineValue(float x, float y) {
+    float GetAdjacentLineValue(float x, float y) {
         float originX = gameResources.GetPlayerX();
         float originY = gameResources.GetPlayerY();
         PositionQuadrant quadrant = GetRelativeQuadrantOf(x, y);
@@ -58,7 +61,7 @@ public:
     }
 
 public:
-    float GetHiddenLineValue(float x, float y) {
+    float GetOppositeLineValue(float x, float y) {
         float originX = gameResources.GetPlayerX();
         float originY = gameResources.GetPlayerY();
         PositionQuadrant quadrant = GetRelativeQuadrantOf(x, y);
@@ -88,15 +91,15 @@ public:
 
 public:
     double GetAngleTo(float x, float y) {
-        float attached = this->GetAttachedLineValue(x, y);
+        float adjacent = this->GetAdjacentLineValue(x, y);
         float hypotenuse = this->GetHypotenuseLineValue(x, y);
 
-        double angle = acos(attached / hypotenuse) * 180.0 / M_PI;
+        double angle = acos(adjacent / hypotenuse) * 180.0 / M_PI;
         return angle + this->GetOffSetGrades(x, y);
     }
 
 public:
-    double calculateAngleDistance(float angle1, float angle2) {
+    double CalculateAngleDistance(float angle1, float angle2) {
         double diff = fmod((angle2 - angle1 + 180), 360) - 180;
         return (diff < -180) ? diff + 360 : diff;
     }

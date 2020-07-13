@@ -33,7 +33,7 @@ public:
     MovingDirection GetDirectionTo(float destinationX, float destinationY) {
         float desiredAngle = AngleFromCoordinate(destinationX, destinationY);
         float carAngle = gameResources.GetCarRotationAngle();
-        double closeDistance = mathTrigonometry->calculateAngleDistance(desiredAngle, carAngle);
+        double closeDistance = mathTrigonometry->CalculateAngleDistance(desiredAngle, carAngle);
 
         if (closeDistance <= 7 && closeDistance >= -7) return FORWARD;
         return (closeDistance < 0) ? RIGHT : LEFT;
