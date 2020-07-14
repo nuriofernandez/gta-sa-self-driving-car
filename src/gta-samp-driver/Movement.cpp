@@ -99,4 +99,9 @@ public:
         longPressKey(0x46);
     }
 
+public:
+    void JoinOrLeaveInterior() {
+        longPressKey(0x59);
+    }
+
 };
