@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Windows.h>
 
 class Movement {
@@ -16,8 +18,9 @@ public:
 private:
     void longPressKey(int key) {
         pressKey(key);
-        Sleep(200);
+        Sleep(300);
         releaseKey(key);
+        Sleep(50);
     }
 
 private:
@@ -32,6 +35,18 @@ private:
         input.ki.wVk = key; // virtual-key code.
         input.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
         SendInput(1, &input, sizeof(INPUT));
+    }
+
+private:
+    void moveCursor(int amount) {
+        INPUT input;
+        input.type = INPUT_MOUSE;
+        input.mi.dx = amount;
+        input.mi.dy = 0;
+        input.mi.mouseData = 0;
+        input.mi.dwFlags = MOUSEEVENTF_MOVE_NOCOALESCE | MOUSEEVENTF_MOVE | MOUSEEVENTF_VIRTUALDESK;
+        input.mi.time = 0;
+        SendInput(1, &input, sizeof(input));
     }
 
 public:
@@ -62,6 +77,11 @@ public:
 public:
     void StopMovingBack() {
         releaseKey(0x53);
+    }
+
+public:
+    void StepForward() {
+        longPressKey(0x57);
     }
 
 public:
@@ -102,6 +122,50 @@ public:
 public:
     void JoinOrLeaveInterior() {
         longPressKey(0x59);
+    }
+
+public:
+    void moveCursorRight() {
+        moveCursor(15);
+    }
+
+public:
+    void moveCursorFastRight() {
+        moveCursor(30);
+    }
+
+public:
+    void moveCursorLeft() {
+        moveCursor(-15);
+    }
+
+public:
+    void moveCursorFastLeft() {
+        moveCursor(-30);
+    }
+
+
+public:
+    void jump() {
+        longPressKey(0x10);
+    }
+
+public:
+    void SlowlyWalk() {
+        pressKey(0x12);
+    }
+
+public:
+    void StopSlowlyWalk() {
+        releaseKey(0x12);
+    }
+
+public:
+    void StopMoving() {
+        StopMovingRight();
+        StopMovingLeft();
+        StopMovingBack();
+        StopMovingForward();
     }
 
 };

@@ -1,15 +1,24 @@
+#pragma once
+
 #include <iostream>
 #include <Windows.h>
-#include "../Driver.cpp"
-#include "../CaptchaSolver.cpp"
-#include "../ChatManager.cpp"
+#include "../../drivers/Driver.cpp"
+#include "../../interactions/CaptchaSolver.cpp"
+#include "../../interactions/ChatManager.cpp"
 
 class DolphinFisherman {
 
 private:
     Movement *movement = new Movement();
-    Driver *driver = new Driver();
     ChatManager *chat = new ChatManager();
+    GameResources *gameResources;
+    Driver *driver;
+
+public:
+    DolphinFisherman(GameResources *gameResources) {
+        this->gameResources = gameResources;
+        this->driver = new Driver(gameResources);
+    }
 
 public:
     void Start() {
@@ -54,7 +63,7 @@ private:
         driver->DriveToPos(1267, -2911);
         driver->DriveToPos(2417, -2859);
         driver->DriveToPos(2775, -2702);
-        driver->DriveToPos(2798, -2594);
+        driver->DriveToPos(2793, -2599);
     }
 
 private:

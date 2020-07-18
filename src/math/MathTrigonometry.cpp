@@ -1,7 +1,14 @@
+#pragma once
+
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 
+#include <cmath>
 #include <math.h>
-#include "GameResources.cpp"
+
+#endif
+
+#include "../game/GameResources.cpp"
 
 enum PositionQuadrant {
     CENTER,         // No quadrant, on an axis line.
@@ -14,10 +21,10 @@ enum PositionQuadrant {
 class MathTrigonometry {
 
 private:
-    GameResources gameResources;
+    GameResources *gameResources;
 
 public:
-    MathTrigonometry(GameResources gameResources) {
+    MathTrigonometry(GameResources *gameResources) {
         this->gameResources = gameResources;
     }
 
@@ -38,8 +45,8 @@ public:
 
 public:
     PositionQuadrant GetRelativeQuadrantOf(float x, float y) {
-        float originX = gameResources.GetPlayerX();
-        float originY = gameResources.GetPlayerY();
+        float originX = gameResources->GetPlayerX();
+        float originY = gameResources->GetPlayerY();
         if (originX == x && originY == y) return PLUS_PLUS;
 
         if (x >= originX && y > originY) return PLUS_PLUS;
@@ -51,8 +58,8 @@ public:
 
 public:
     float GetAdjacentLineValue(float x, float y) {
-        float originX = gameResources.GetPlayerX();
-        float originY = gameResources.GetPlayerY();
+        float originX = gameResources->GetPlayerX();
+        float originY = gameResources->GetPlayerY();
         PositionQuadrant quadrant = GetRelativeQuadrantOf(x, y);
 
         if (quadrant == PLUS_PLUS || quadrant == MINUS_MINUS) return this->Distance(originY, y);
@@ -62,8 +69,8 @@ public:
 
 public:
     float GetOppositeLineValue(float x, float y) {
-        float originX = gameResources.GetPlayerX();
-        float originY = gameResources.GetPlayerY();
+        float originX = gameResources->GetPlayerX();
+        float originY = gameResources->GetPlayerY();
         PositionQuadrant quadrant = GetRelativeQuadrantOf(x, y);
 
         if (quadrant == PLUS_PLUS || quadrant == MINUS_MINUS) return this->Distance(originX, x);
@@ -73,8 +80,8 @@ public:
 
 public:
     float GetHypotenuseLineValue(float destinationX, float destinationY) {
-        float originX = gameResources.GetPlayerX();
-        float originY = gameResources.GetPlayerY();
+        float originX = gameResources->GetPlayerX();
+        float originY = gameResources->GetPlayerY();
         return this->Distance(originX, originY, destinationX, destinationY);
     }
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Windows.h>
 #include <iostream>
 
@@ -29,7 +31,9 @@ private:
             printf("Process '%s' not found. Retrying in 2 seconds...\n", processName.c_str());
             Sleep(2000);
             FindProcess();
+            return;
         }
+        printf("Successfully hooked to '%s'.\n", processName.c_str());
     }
 
 private:
@@ -58,7 +62,7 @@ public:
     int ReadInt(DWORD pointerAddress) {
         int response;
         if (!ReadProcessMemory(process, (LPVOID) pointerAddress, &response, sizeof(response), NULL)) {
-            printf("Error: Failed to read a int from '%s' memory address\n", &pointerAddress);
+            printf("Error: Failed to read a int from '%lx' memory address.\n", pointerAddress);
             FindProcess();
             throw -1;
         }
@@ -69,7 +73,7 @@ public:
     float ReadFloat(DWORD pointerAddress) {
         float response;
         if (!ReadProcessMemory(process, (LPVOID) pointerAddress, &response, sizeof(response), NULL)) {
-            printf("Error: Failed to read a float from '%s' memory address\n", &pointerAddress);
+            printf("Error: Failed to read a float from '%lx' memory address.\n", pointerAddress);
             FindProcess();
             throw -1;
         }
@@ -80,7 +84,7 @@ public:
     DWORD ReadDWORD(DWORD pointerAddress) {
         DWORD response;
         if (!ReadProcessMemory(process, (void *) pointerAddress, &response, sizeof(response), NULL)) {
-            printf("Error: Failed to read a DWORD from '%s' memory address\n", &pointerAddress);
+            printf("Error: Failed to read a DWORD from '%lx' memory address.\n", pointerAddress);
             FindProcess();
             throw -1;
         }
@@ -90,8 +94,8 @@ public:
 public:
     uint8_t ReadUint8(DWORD pointerAddress) {
         uint8_t response;
-        if (!ReadProcessMemory(process, (LPVOID) pointerAddress, &response, sizeof(response), 0)) {
-            printf("Error: Failed to read a int8 from '%s' memory address\n", &pointerAddress);
+        if (!ReadProcessMemory(process, (LPVOID) pointerAddress, &response, sizeof(response), NULL)) {
+            printf("Error: Failed to read a int8 from '%lx' memory address.\n", pointerAddress);
             FindProcess();
             throw -1;
         }
