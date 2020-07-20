@@ -48,11 +48,11 @@ private:
     void driveToTurtle() {
         gameUtils->waitInVehicle();
         printf("Going to the turtle fishing area...\n");
-        driver->DriveToPos(2775, -2702);
-        driver->DriveToPos(2417, -2859);
-        driver->DriveToPos(1267, -2911);
-        driver->DriveToPos(980, -2820);
-        driver->DriveToPos(945, -2820);
+        driver->DriveToPos(new Checkpoint(2775, -2702));
+        driver->DriveToPos(new Checkpoint(2417, -2859));
+        driver->DriveToPos(new Checkpoint(1267, -2911));
+        driver->DriveToPos(new Checkpoint(980, -2820));
+        driver->DriveToPos(new Checkpoint(945, -2820));
         movement->MoveBack();
         Sleep(2000);
         movement->StopMovingBack();
@@ -65,16 +65,16 @@ private:
     void driveToDock() {
         gameUtils->waitInVehicle();
         printf("Going to the dock...\n");
-        driver->DriveToPos(1267, -2911);
-        driver->DriveToPos(2417, -2859);
-        driver->DriveToPos(2775, -2702);
+        driver->DriveToPos(new Checkpoint(1267, -2911));
+        driver->DriveToPos(new Checkpoint(2417, -2859));
+        driver->DriveToPos(new Checkpoint(2775, -2702));
     }
 
 private:
     void deliver() {
         gameUtils->waitInVehicle();
         while (gameResources->IsInVehicle()) {
-            driver->DriveToPos(2798, -2594);
+            driver->DriveToPos(new Checkpoint(2798, -2594));
             Sleep(500);
         }
     }

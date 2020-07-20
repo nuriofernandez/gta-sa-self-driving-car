@@ -3,6 +3,7 @@
 #include "../math/AxisManager.cpp"
 #include "../interactions/Movement.cpp"
 #include "../game/GameUtils.cpp"
+#include "Checkpoint.cpp"
 
 class Driver {
 
@@ -20,11 +21,11 @@ public:
     }
 
 public:
-    void DriveToPos(float destX, float destY) {
-        printf("Driving to %f, %f...\n", destX, destY);
-        while (axisCalculation->GetDistanceTo(destX, destY) >= 5) {
+    void DriveToPos(Checkpoint *destination) {
+        printf("Driving to %f, %f...\n", destination->getX(), destination->getY());
+        while (axisCalculation->GetDistanceTo(destination->getX(), destination->getY()) >= 5) {
             Sleep(10);
-            drive(destX, destY);
+            drive(destination->getX(), destination->getY());
         }
         movement->StopMoving();
     }

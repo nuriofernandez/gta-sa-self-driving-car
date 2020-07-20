@@ -33,7 +33,7 @@ public:
 
 private:
     void deliverStone() {
-        walker->RunToPos(-550, 2337);
+        walker->RunToPos(new Checkpoint(-550, 2337));
         Sleep(1000);
         chat->Type("/dejar roca");
         solveCaptcha();
@@ -48,42 +48,42 @@ private:
         movement->StopMovingBack();
         movement->StopMovingLeft();
         movement->StopMovingRight();
-        walker->overSecureWalkTo(-565, 2338);
+        walker->overSecureWalkTo(new Checkpoint(-565, 2338));
     }
 
 private:
     void goDeliveryPoint() {
-        walker->RunToPos(-611, 2325);
-        walker->RunToPos(-605, 2330);
-        walker->RunToPos(-597, 2331);
-        walker->RunToPos(-587, 2339);
+        walker->RunToPos(new Checkpoint(-611, 2325));
+        walker->RunToPos(new Checkpoint(-605, 2330));
+        walker->RunToPos(new Checkpoint(-597, 2331));
+        walker->RunToPos(new Checkpoint(-587, 2339));
     }
 
 private:
     void goToInnerDoor() {
-        walker->RunToPos(-740, 2392);
-        walker->RunToPos(-727, 2408);
-        walker->RunToPos(-717, 2422);
-        walker->RunToPos(-718, 2462);
+        walker->RunToPos(new Checkpoint(-740, 2392));
+        walker->RunToPos(new Checkpoint(-727, 2408));
+        walker->RunToPos(new Checkpoint(-717, 2422));
+        walker->RunToPos(new Checkpoint(-718, 2462));
         Sleep(1000);
         movement->JoinOrLeaveInterior();
     }
 
 private:
     void goToOutsideDoor() {
-        walker->RunToPos(-587, 2339);
-        walker->RunToPos(-597, 2331);
-        walker->RunToPos(-605, 2330);
-        walker->RunToPos(-611, 2325);
+        walker->RunToPos(new Checkpoint(-587, 2339));
+        walker->RunToPos(new Checkpoint(-597, 2331));
+        walker->RunToPos(new Checkpoint(-605, 2330));
+        walker->RunToPos(new Checkpoint(-611, 2325));
         movement->JoinOrLeaveInterior();
     }
 
 private:
     void goToStone() {
-        walker->RunToPos(-717, 2444);
-        walker->RunToPos(-717, 2422);
-        walker->RunToPos(-727, 2408);
-        walker->RunToPos(-740, 2392);
+        walker->RunToPos(new Checkpoint(-717, 2444));
+        walker->RunToPos(new Checkpoint(-717, 2422));
+        walker->RunToPos(new Checkpoint(-727, 2408));
+        walker->RunToPos(new Checkpoint(-740, 2392));
     }
 
 private:

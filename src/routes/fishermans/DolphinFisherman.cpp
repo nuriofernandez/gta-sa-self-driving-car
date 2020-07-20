@@ -42,12 +42,12 @@ private:
 private:
     void driveToDolphin() {
         printf("Going to the dolphin fishing area...\n");
-        driver->DriveToPos(2775, -2702);
-        driver->DriveToPos(2417, -2859);
-        driver->DriveToPos(1267, -2911);
-        driver->DriveToPos(101, -1979);
-        driver->DriveToPos(36, -1766);
-        driver->DriveToPos(36, -1710);
+        driver->DriveToPos(new Checkpoint(2775, -2702));
+        driver->DriveToPos(new Checkpoint(2417, -2859));
+        driver->DriveToPos(new Checkpoint(1267, -2911));
+        driver->DriveToPos(new Checkpoint(101, -1979));
+        driver->DriveToPos(new Checkpoint(36, -1766));
+        driver->DriveToPos(new Checkpoint(36, -1710));
         movement->MoveBack();
         Sleep(2000);
         movement->StopMovingBack();
@@ -59,11 +59,11 @@ private:
 private:
     void driveToDock() {
         printf("Going to the dock...\n");
-        driver->DriveToPos(101, -1979);
-        driver->DriveToPos(1267, -2911);
-        driver->DriveToPos(2417, -2859);
-        driver->DriveToPos(2775, -2702);
-        driver->DriveToPos(2793, -2599);
+        driver->DriveToPos(new Checkpoint(101, -1979));
+        driver->DriveToPos(new Checkpoint(1267, -2911));
+        driver->DriveToPos(new Checkpoint(2417, -2859));
+        driver->DriveToPos(new Checkpoint(2775, -2702));
+        driver->DriveToPos(new Checkpoint(2793, -2599));
     }
 
 private:
