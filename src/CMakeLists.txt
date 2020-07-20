@@ -7,6 +7,8 @@ add_executable(
         gta_sa_self_driver_bot
         main.cpp
 
+        application/Console.cpp
+
         math/MathTrigonometry.cpp
         math/AxisManager.cpp
 
