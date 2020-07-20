@@ -18,6 +18,7 @@ add_executable(
 
         drivers/Walker.cpp
         drivers/Driver.cpp
+        drivers/Checkpoint.cpp
 
         interactions/CaptchaSolver.cpp
         interactions/ChatManager.cpp
@@ -28,6 +29,7 @@ add_executable(
         routes/miners/TitaniumMiner.cpp
         routes/miners/MercuryMiner.cpp
 
+        routes/fishermans/Fisherman.cpp
         routes/fishermans/DolphinFisherman.cpp
         routes/fishermans/TurtleFisherman.cpp
-        drivers/Checkpoint.cpp)
+)

@@ -5,6 +5,7 @@
 #include "../../drivers/Driver.cpp"
 #include "../../interactions/CaptchaSolver.cpp"
 #include "../../interactions/ChatManager.cpp"
+#include "Fisherman.cpp"
 
 class DolphinFisherman {
 
@@ -12,11 +13,13 @@ private:
     Movement *movement = new Movement();
     ChatManager *chat = new ChatManager();
     GameResources *gameResources;
+    GameUtils *gameUtils;
     Driver *driver;
 
 public:
     DolphinFisherman(GameResources *gameResources) {
         this->gameResources = gameResources;
+        this->gameUtils = new GameUtils(gameResources);
         this->driver = new Driver(gameResources);
     }
 
@@ -27,6 +30,7 @@ public:
         fish();
         returnToBoat();
         driveToDock();
+        deliver();
     }
 
 private:
@@ -42,12 +46,12 @@ private:
 private:
     void driveToDolphin() {
         printf("Going to the dolphin fishing area...\n");
-        driver->DriveToPos(new Checkpoint(2775, -2702));
-        driver->DriveToPos(new Checkpoint(2417, -2859));
-        driver->DriveToPos(new Checkpoint(1267, -2911));
-        driver->DriveToPos(new Checkpoint(101, -1979));
-        driver->DriveToPos(new Checkpoint(36, -1766));
-        driver->DriveToPos(new Checkpoint(36, -1710));
+        driver->DriveToPos(Fisherman::Checkpoints::DOCK_EXIT);
+        driver->DriveToPos(Fisherman::Checkpoints::OCEAN_DOCS_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::BEACH_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::VERONA_BEACH_LIGHTHOUSE);
+        driver->DriveToPos(Fisherman::Checkpoints::DOLPHIN_REORIENTATION_POINT);
+        driver->DriveToPos(Fisherman::Checkpoints::DOLPHIN_POINT);
         movement->MoveBack();
         Sleep(2000);
         movement->StopMovingBack();
@@ -59,11 +63,19 @@ private:
 private:
     void driveToDock() {
         printf("Going to the dock...\n");
-        driver->DriveToPos(new Checkpoint(101, -1979));
-        driver->DriveToPos(new Checkpoint(1267, -2911));
-        driver->DriveToPos(new Checkpoint(2417, -2859));
-        driver->DriveToPos(new Checkpoint(2775, -2702));
-        driver->DriveToPos(new Checkpoint(2793, -2599));
+        driver->DriveToPos(Fisherman::Checkpoints::VERONA_BEACH_LIGHTHOUSE);
+        driver->DriveToPos(Fisherman::Checkpoints::BEACH_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::OCEAN_DOCS_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::DOCK_EXIT);
+    }
+
+private:
+    void deliver() {
+        gameUtils->waitInVehicle();
+        while (gameResources->IsInVehicle()) {
+            driver->DriveToPos(Fisherman::Checkpoints::DELIVERY_POINT);
+            Sleep(500);
+        }
     }
 
 private:

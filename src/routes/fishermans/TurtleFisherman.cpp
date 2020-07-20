@@ -5,7 +5,7 @@
 #include "../../drivers/Driver.cpp"
 #include "../../interactions/CaptchaSolver.cpp"
 #include "../../interactions/ChatManager.cpp"
-#include "../../game/GameUtils.cpp"
+#include "Fisherman.cpp"
 
 class TurtleFisherman {
 
@@ -48,11 +48,11 @@ private:
     void driveToTurtle() {
         gameUtils->waitInVehicle();
         printf("Going to the turtle fishing area...\n");
-        driver->DriveToPos(new Checkpoint(2775, -2702));
-        driver->DriveToPos(new Checkpoint(2417, -2859));
-        driver->DriveToPos(new Checkpoint(1267, -2911));
-        driver->DriveToPos(new Checkpoint(980, -2820));
-        driver->DriveToPos(new Checkpoint(945, -2820));
+        driver->DriveToPos(Fisherman::Checkpoints::DOCK_EXIT);
+        driver->DriveToPos(Fisherman::Checkpoints::OCEAN_DOCS_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::BEACH_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::TURTLE_REORIENTATION_POINT);
+        driver->DriveToPos(Fisherman::Checkpoints::TURTLE_POINT);
         movement->MoveBack();
         Sleep(2000);
         movement->StopMovingBack();
@@ -65,16 +65,16 @@ private:
     void driveToDock() {
         gameUtils->waitInVehicle();
         printf("Going to the dock...\n");
-        driver->DriveToPos(new Checkpoint(1267, -2911));
-        driver->DriveToPos(new Checkpoint(2417, -2859));
-        driver->DriveToPos(new Checkpoint(2775, -2702));
+        driver->DriveToPos(Fisherman::Checkpoints::BEACH_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::OCEAN_DOCS_CORNER);
+        driver->DriveToPos(Fisherman::Checkpoints::DOCK_EXIT);
     }
 
 private:
     void deliver() {
         gameUtils->waitInVehicle();
         while (gameResources->IsInVehicle()) {
-            driver->DriveToPos(new Checkpoint(2798, -2594));
+            driver->DriveToPos(Fisherman::Checkpoints::DELIVERY_POINT);
             Sleep(500);
         }
     }
