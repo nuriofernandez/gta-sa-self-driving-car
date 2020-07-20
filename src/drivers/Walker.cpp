@@ -54,7 +54,8 @@ public:
 
 private:
     void goTo(float destX, float destY) {
-        gameUtils->waitOnFloor();
+        gameUtils->waitOnFloor(100, false);
+        movement->MoveForward();
 
         MovingDirection movingTo = axisCalculation->GetDirectionTo(destX, destY);
 
