@@ -68,18 +68,23 @@ public:
     }
 
 public:
+    bool IsOnAirOrWater() {
+        return GetPedStatus() == 0;
+    }
+
+public:
     bool IsInVehicle() {
-        return GetPedStatus() == 9; // 1(9) = IN CAR
+        return GetPedStatus() == 1;
+    }
+
+public:
+    bool IsEnteringInterior() {
+        return GetPedStatus() == 2;
     }
 
 public:
     bool IsOnFloor() {
-        return GetPedStatus() == 11; // 3(11) = IN CAR
-    }
-
-public:
-    bool IsOnAirOrWater() {
-        return GetPedStatus() == 8; // 0(8) = IN CAR
+        return GetPedStatus() == 3;
     }
 
 public:
@@ -102,7 +107,7 @@ public:
         return CalculateAngleByLookAndGrad(angleyLook, anglexLook, anglexGrad, anglezGrad);
     }
 
-public:
+private:
     double CalculateAngleByLookAndGrad(float angleyLook, float anglexLook, float anglexGrad, float anglezGrad) {
         if ((angleyLook >= 0 && anglexLook >= 0) || (angleyLook < 0 && anglexLook > 0)) {
             return acos(anglexGrad / cos(asin(anglezGrad))) * 180.0 / 3.1415;
