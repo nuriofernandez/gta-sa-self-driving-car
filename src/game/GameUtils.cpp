@@ -16,7 +16,7 @@ public:
 
 public:
     void waitInVehicle() {
-        waitOnFloor(1000);
+        waitInVehicle(1000);
     }
 
 public:
