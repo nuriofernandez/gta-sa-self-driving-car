@@ -24,6 +24,7 @@ add_executable(
         interactions/ChatManager.cpp
         interactions/Movement.cpp
 
+        routes/miners/Miner.cpp
         routes/miners/IronMiner.cpp
         routes/miners/CopperMiner.cpp
         routes/miners/TitaniumMiner.cpp

@@ -5,6 +5,7 @@
 #include "../../drivers/Walker.cpp"
 #include "../../interactions/CaptchaSolver.cpp"
 #include "../../interactions/ChatManager.cpp"
+#include "Miner.cpp"
 
 class IronMiner {
 
@@ -33,7 +34,7 @@ public:
 
 private:
     void deliverStone() {
-        walker->RunToPos(new Checkpoint(-550, 2337));
+        walker->RunToPos(Miner::Checkpoints::DELIVERY_POINT);
         Sleep(1000);
         chat->Type("/dejar roca");
         solveCaptcha();
@@ -48,42 +49,43 @@ private:
         movement->StopMovingBack();
         movement->StopMovingLeft();
         movement->StopMovingRight();
-        walker->overSecureWalkTo(new Checkpoint(-565, 2338));
+        walker->overSecureWalkTo(Miner::Checkpoints::START_RAMP);
     }
 
 private:
     void goDeliveryPoint() {
-        walker->RunToPos(new Checkpoint(-611, 2325));
-        walker->RunToPos(new Checkpoint(-605, 2330));
-        walker->RunToPos(new Checkpoint(-597, 2331));
-        walker->RunToPos(new Checkpoint(-587, 2339));
+        walker->RunToPos(Miner::Checkpoints::ENTER_DOOR);
+        walker->RunToPos(Miner::Checkpoints::OUTSIDE_PATH_DOOR_CORNER);
+        walker->RunToPos(Miner::Checkpoints::OUTSIDE_PATH_DOOR_BRIDGE);
+        walker->RunToPos(Miner::Checkpoints::OUTSIDE_PATH_RAMP_CORNER);
     }
 
 private:
     void goToInnerDoor() {
-        walker->RunToPos(new Checkpoint(-740, 2392));
-        walker->RunToPos(new Checkpoint(-727, 2408));
-        walker->RunToPos(new Checkpoint(-717, 2422));
-        walker->RunToPos(new Checkpoint(-718, 2462));
+        walker->RunToPos(Miner::Checkpoints::IRON_STONE);
+        walker->RunToPos(Miner::Checkpoints::IRON_PATH_MID);
+        walker->RunToPos(Miner::Checkpoints::RAIL_END);
+        walker->RunToPos(Miner::Checkpoints::RAIL_MID);
+        walker->RunToPos(Miner::Checkpoints::EXIT_DOOR);
         Sleep(1000);
         movement->JoinOrLeaveInterior();
     }
 
 private:
     void goToOutsideDoor() {
-        walker->RunToPos(new Checkpoint(-587, 2339));
-        walker->RunToPos(new Checkpoint(-597, 2331));
-        walker->RunToPos(new Checkpoint(-605, 2330));
-        walker->RunToPos(new Checkpoint(-611, 2325));
+        walker->RunToPos(Miner::Checkpoints::OUTSIDE_PATH_RAMP_CORNER);
+        walker->RunToPos(Miner::Checkpoints::OUTSIDE_PATH_DOOR_BRIDGE);
+        walker->RunToPos(Miner::Checkpoints::OUTSIDE_PATH_DOOR_CORNER);
+        walker->RunToPos(Miner::Checkpoints::ENTER_DOOR);
         movement->JoinOrLeaveInterior();
     }
 
 private:
     void goToStone() {
-        walker->RunToPos(new Checkpoint(-717, 2444));
-        walker->RunToPos(new Checkpoint(-717, 2422));
-        walker->RunToPos(new Checkpoint(-727, 2408));
-        walker->RunToPos(new Checkpoint(-740, 2392));
+        walker->RunToPos(Miner::Checkpoints::RAIL_MID);
+        walker->RunToPos(Miner::Checkpoints::RAIL_END);
+        walker->RunToPos(Miner::Checkpoints::IRON_PATH_MID);
+        walker->RunToPos(Miner::Checkpoints::IRON_STONE);
     }
 
 private:
